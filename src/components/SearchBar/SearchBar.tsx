@@ -1,4 +1,5 @@
-import React, { FC, useState } from 'react'
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { FC, useState, MouseEvent, ChangeEvent } from 'react'
 import { ISortByOptions } from '../../interfaces/buisness.interfaces'
 import { isObjKey } from '../../utils/utils'
 import './SearchBar.css'
@@ -13,8 +14,8 @@ const sortByOptions: ISortByOptions = {
 }
 
 const SearchBar: FC<Props> = (props): JSX.Element => {
-	const [term, setTerm] = useState("")
-	const [location, setLocation] = useState("")
+	const [term, setTerm] = useState<string>("")
+	const [location, setLocation] = useState<string>("")
 	const [sortBy, setSortBy] = useState<ISortByOptions[keyof ISortByOptions]>(sortByOptions['Best Match'])
 
 	const getSortByClass = (sortOption: string) => {
@@ -24,8 +25,25 @@ const SearchBar: FC<Props> = (props): JSX.Element => {
 		return ''
 	}
 
+	const searchYelp = ({ term, location, sortBy }: { term: string, location: string, sortBy: ISortByOptions[keyof ISortByOptions] }) => {
+		console.log(`${term}, ${location}, ${sortBy}`)
+	}
+
 	const handleSortByChange = (sortOption: ISortByOptions[keyof ISortByOptions]) => {
 		setSortBy(sortOption)
+	}
+
+	const handleTermChange = (event: ChangeEvent<HTMLInputElement>) => {
+		setTerm(event.target.value)
+	}
+
+	const handleLocationChange = (event: ChangeEvent<HTMLInputElement>) => {
+		setLocation(event.target.value)
+	}
+
+	const handleSearch = (event: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {
+		event.preventDefault()
+		searchYelp({ term, location, sortBy })
 	}
 
 	const renderSortByOptions = () => {
@@ -47,11 +65,11 @@ const SearchBar: FC<Props> = (props): JSX.Element => {
 			</ul>
 		</div>
 		<div className="SearchBar-fields">
-			<input placeholder="Search Businesses" />
-			<input placeholder="Where?" />
+			<input placeholder="Search Businesses" value={term} onChange={(event) => handleTermChange(event)} />
+			<input placeholder="Where?" value={location} onChange={(event) => handleLocationChange(event)} />
 		</div>
 		<div className="SearchBar-submit">
-			<a>Let's Go</a>
+			<a onClick={(event) => handleSearch(event)}>Let's Go</a>
 		</div>
 	</div>
 }
