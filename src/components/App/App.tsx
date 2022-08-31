@@ -1,37 +1,17 @@
-import React from 'react';
-import { IBusiness, IBusinesses } from '../../interfaces/buisness.interfaces';
+import React, { useState } from 'react';
 import BusinessList from '../BusinessList/BusinessList';
 import SearchBar from '../SearchBar/SearchBar';
+
 import './App.css';
+import { IBusinesses } from '../../interfaces/buisness.interfaces';
 
-
-
-const business: IBusiness = {
-  "imageSrc": 'https://content.codecademy.com/programs/react/ravenous/pizza.jpg',
-  "name": 'MarginOtto Pizzeria',
-  "address": '1010 Paddington Way',
-  "city": 'Flavortown',
-  "state": 'NY',
-  "zipCode": '10101',
-  "category": 'Italian',
-  "rating": 4.5,
-  "reviewCount": 90
-}
-
-const businesses: IBusinesses = [
-  business,
-  business,
-  business,
-  business,
-  business,
-  business
-]
 
 function App() {
+  const [businesses, setBusinesses] = useState<IBusinesses>([])
   return (
     <div className="App">
       <h1>ravenous</h1>
-      <SearchBar />
+      <SearchBar setBusinesses={setBusinesses} />
       <BusinessList businesses={businesses} />
     </div>
   );

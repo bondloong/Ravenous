@@ -10,7 +10,7 @@ type Props = {
 const BusinessList: FC<Props> = ({ businesses }) => {
 	return <div className="BusinessList">
 		{
-			businesses.map(business => <Business business={business} />)
+			businesses.map(business => <Business key={business.id} business={business} />)
 		}
 
 	</div>

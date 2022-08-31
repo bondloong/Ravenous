@@ -1,10 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FC, useState, MouseEvent, ChangeEvent } from 'react'
-import { ISortByOptions } from '../../interfaces/buisness.interfaces'
+import { IBusinesses, ISortByOptions } from '../../interfaces/buisness.interfaces'
 import { isObjKey } from '../../utils/utils'
+import { Yelp } from '../../utils/Yelp'
 import './SearchBar.css'
 
-type Props = {}
+type Props = {
+	setBusinesses: React.Dispatch<React.SetStateAction<IBusinesses>>
+}
 
 
 const sortByOptions: ISortByOptions = {
@@ -13,7 +16,7 @@ const sortByOptions: ISortByOptions = {
 	'Most Reviewed': 'review_count'
 }
 
-const SearchBar: FC<Props> = (props): JSX.Element => {
+const SearchBar: FC<Props> = ({ setBusinesses }): JSX.Element => {
 	const [term, setTerm] = useState<string>("")
 	const [location, setLocation] = useState<string>("")
 	const [sortBy, setSortBy] = useState<ISortByOptions[keyof ISortByOptions]>(sortByOptions['Best Match'])
@@ -25,8 +28,8 @@ const SearchBar: FC<Props> = (props): JSX.Element => {
 		return ''
 	}
 
-	const searchYelp = ({ term, location, sortBy }: { term: string, location: string, sortBy: ISortByOptions[keyof ISortByOptions] }) => {
-		console.log(`${term}, ${location}, ${sortBy}`)
+	const searchYelp = async ({ term, location, sortBy }: { term: string, location: string, sortBy: ISortByOptions[keyof ISortByOptions] }) => {
+		setBusinesses(await Yelp.search({ term, location, sortBy }))
 	}
 
 	const handleSortByChange = (sortOption: ISortByOptions[keyof ISortByOptions]) => {
