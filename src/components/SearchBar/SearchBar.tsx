@@ -46,7 +46,11 @@ const SearchBar: FC<Props> = ({ setBusinesses }): JSX.Element => {
 
 	const handleSearch = (event: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {
 		event.preventDefault()
-		searchYelp({ term, location, sortBy })
+		if (!location) {
+			alert("Where?")
+		} else {
+			searchYelp({ term, location, sortBy })
+		}
 	}
 
 	const renderSortByOptions = () => {
